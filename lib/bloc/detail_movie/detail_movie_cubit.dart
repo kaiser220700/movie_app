@@ -1,4 +1,3 @@
-
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_movie_app/models/load_status.dart';
@@ -12,7 +11,8 @@ part 'detail_movie_state.dart';
 class DetailMovieCubit extends Cubit<DetailMovieState> {
   MovieRepository movieRepository;
   String movieID;
-  DetailMovieCubit(this.movieRepository, this.movieID) : super(DetailMovieState());
+  DetailMovieCubit(this.movieRepository, this.movieID)
+      : super(DetailMovieState());
 
   void init() async {
     emit(state.copyWith(loadStatus: LoadStatus.LOADING));
@@ -20,8 +20,12 @@ class DetailMovieCubit extends Cubit<DetailMovieState> {
       final apiDetailMovie = await movieRepository.getDetailMovie(movieID);
       final apiCast = await movieRepository.getCast(movieID);
       final apiVideo = await movieRepository.getVideo(movieID);
-      if ( apiDetailMovie != null || apiCast != null || apiVideo != null) {
-        emit(state.copyWith(detailMovie: apiDetailMovie,castList: apiCast, video: apiVideo,loadStatus: LoadStatus.SUCCESS));
+      if (apiDetailMovie != null || apiCast != null || apiVideo != null) {
+        emit(state.copyWith(
+            detailMovie: apiDetailMovie,
+            castList: apiCast,
+            video: apiVideo,
+            loadStatus: LoadStatus.SUCCESS));
       } else {
         emit(state.copyWith(loadStatus: LoadStatus.FAILURE));
       }
@@ -31,4 +35,11 @@ class DetailMovieCubit extends Cubit<DetailMovieState> {
       emit(state.copyWith(loadStatus: LoadStatus.FAILURE));
     }
   }
+
+  void onPanelSlideCubit(double position, double iconBackHeight ,double iconBackHeightCurrent,
+      double panelHeightOpen, double panelHeightClosed) {
+        iconBackHeight = iconBackHeightCurrent - position * (panelHeightOpen - panelHeightClosed) / 2;
+        emit(state.copyWith(iconBackHeight: iconBackHeight));
+  }
+
 }

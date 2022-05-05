@@ -21,8 +21,8 @@ class _DetailMovieScreenState extends State<DetailMovieScreen> {
   late final DetailMovieCubit _cubit;
   double? screenWidth, screenHeight;
   final panelController = PanelController();
-  static const double iconBackHeightClosed = 768;
-  double iconBackHeight = iconBackHeightClosed;
+  static const double iconBackHeightCurrent = 768;
+  double iconBackHeight = iconBackHeightCurrent;
 
   @override
   void initState() {
@@ -39,23 +39,27 @@ class _DetailMovieScreenState extends State<DetailMovieScreen> {
     final panelHeightOpen = (screenHeight ?? 0) * 0.8;
     final panelHeightClosed = (screenHeight ?? 0) * 0.4;
     return Scaffold(
-      body: SlidingUpPanel(
-        controller: panelController,
-        maxHeight: panelHeightOpen,
-        minHeight: panelHeightClosed,
-        parallaxEnabled: true,
-        parallaxOffset: .5,
-        body: _buildBody(),
-        panelBuilder: (controller) => PanelWidget(
-          controller: controller,
-          panelController: panelController,
-        ),
-        borderRadius: const BorderRadius.vertical(top: Radius.circular(50.0)),
-        onPanelSlide: (position) => setState(() {
-            
-          });
-            //  _cubit.onPanelSlideCubit(position, iconBackHeight,iconBackHeightCurrent, panelHeightOpen, panelHeightClosed);
-            // iconBackHeight = state.iconBackHeight ?? 0;
+      body: BlocBuilder<DetailMovieCubit,DetailMovieState>(
+        buildWhen: (prev, cur) => prev.iconBackHeight != cur.iconBackHeight,
+        builder:(context, state) => SlidingUpPanel(
+          controller: panelController,
+          maxHeight: panelHeightOpen,
+          minHeight: panelHeightClosed,
+          parallaxEnabled: true,
+          parallaxOffset: .5,
+          body: _buildBody(),
+          panelBuilder: (controller) => PanelWidget(
+            controller: controller,
+            panelController: panelController,
+          ),
+          borderRadius: const BorderRadius.vertical(top: Radius.circular(50.0)),
+          onPanelSlide: (position) //=> setState(() {
+          //   iconBackHeight = iconBackHeightCurrent - position * (panelHeightOpen - panelHeightClosed) / 2;
+          // })
+          {
+             _cubit.onPanelSlideCubit(position, iconBackHeight,iconBackHeightCurrent, panelHeightOpen, panelHeightClosed);
+            iconBackHeight = state.iconBackHeight ?? 0;
+          }
             
         ),
       ),
@@ -113,18 +117,18 @@ class _DetailMovieScreenState extends State<DetailMovieScreen> {
               ),
             ),
           ),
-           Positioned(
+          Positioned(
             top: (screenHeight ?? 0) / 4,
             left: (screenWidth ?? 0) / 2 - 40,
-            child: BlocBuilder<DetailMovieCubit,DetailMovieState>(
+            child: BlocBuilder<DetailMovieCubit, DetailMovieState>(
               buildWhen: (prev, cur) => prev.loadStatus != cur.loadStatus,
-              builder: (context,state) => GestureDetector(
-                onTap:() async {
-                          final youtubeUrl =
-                              'https://www.youtube.com/embed/${state.video?.results?.first.key}';
-                          if (!await launchUrl(Uri.parse(youtubeUrl))) {
-                            throw "Could not launch $youtubeUrl";
-                          }
+              builder: (context, state) => GestureDetector(
+                onTap: () async {
+                  final youtubeUrl =
+                      'https://www.youtube.com/embed/${state.video?.results?.first.key}';
+                  if (!await launchUrl(Uri.parse(youtubeUrl))) {
+                    throw "Could not launch $youtubeUrl";
+                  }
                 },
                 child: const Icon(
                   Icons.play_circle_outline,
@@ -136,4 +140,5 @@ class _DetailMovieScreenState extends State<DetailMovieScreen> {
           )
         ],
       );
+
 }

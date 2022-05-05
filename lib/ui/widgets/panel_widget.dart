@@ -231,8 +231,8 @@ class PanelWidget extends StatelessWidget {
   Widget _buildDragHandle() => GestureDetector(
         child: Center(
           child: Container(
-            width: 30,
-            height: 2,
+            width: 35,
+            height: 3.5,
             decoration: BoxDecoration(
                 color: Colors.grey[300],
                 borderRadius: BorderRadius.circular(12.0)),

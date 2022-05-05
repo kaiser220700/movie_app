@@ -23,6 +23,7 @@ class HomeScreen extends StatefulWidget {
 class _HomeSreenState extends State<HomeScreen> {
   late final MovieCubit _cubit;
   double? screenWidth, screenHeight;
+  int? _currentIndex;
 
   @override
   void initState() {
@@ -78,7 +79,7 @@ class _HomeSreenState extends State<HomeScreen> {
                         ],
                       ),
                     ),
-                    SizedBox(width: (screenWidth ?? 0) * (160 / 428)),
+                    SizedBox(width: (screenWidth ?? 0) * (180 / 428)),
                     const Icon(MyIcons.icAlert, color: MyColors.colorIcon),
                   ],
                 ),
@@ -106,7 +107,8 @@ class _HomeSreenState extends State<HomeScreen> {
                         height: (screenHeight ?? 0) * (141 / 926) + 40,
                         width: double.infinity,
                         child: Swiper(
-                          onTap: (index) {
+                          onIndexChanged: (index) => _currentIndex = index,
+                                  onTap: (index) {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
@@ -174,11 +176,10 @@ class _HomeSreenState extends State<HomeScreen> {
                                         ),
                                       ),
                                     ),
-                                    color: index % 2 == 0
+                                    color: _currentIndex == index
                                         ? const Color(0x00121212)
                                             .withOpacity(0.05)
-                                        : const Color.fromARGB(
-                                                126, 100, 171, 219)
+                                        : const Color.fromARGB(255, 100, 171, 219)
                                             .withOpacity(0.6),
                                     colorBlendMode: BlendMode.hardLight,
                                   ),
@@ -262,6 +263,7 @@ class _HomeSreenState extends State<HomeScreen> {
                       height: (screenHeight ?? 0) * (265 / 926),
                       width: double.infinity,
                       child: Swiper(
+                        onIndexChanged: (index) => _currentIndex = index,
                         onTap: (index) {
                           Navigator.push(
                             context,
@@ -328,9 +330,9 @@ class _HomeSreenState extends State<HomeScreen> {
                                     ),
                                   ),
                                 ),
-                                color: index % 2 == 0
+                                color: _currentIndex == index
                                     ? const Color(0x00121212).withOpacity(0.05)
-                                    : const Color.fromARGB(127, 100, 171, 219)
+                                    : const Color.fromARGB(255, 100, 171, 219)
                                         .withOpacity(0.6),
                                 colorBlendMode: BlendMode.hardLight,
                               ),
