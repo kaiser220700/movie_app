@@ -1,13 +1,12 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'upcoming_movie.dart';
+part of 'video.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-UpcomingMovie _$UpcomingMovieFromJson(Map<String, dynamic> json) =>
-    UpcomingMovie(
+Video _$VideoFromJson(Map<String, dynamic> json) => Video(
       results: (json['results'] as List<dynamic>?)
           ?.map((e) => Result.fromJson(e as Map<String, dynamic>))
           .toList(),
@@ -16,8 +15,6 @@ UpcomingMovie _$UpcomingMovieFromJson(Map<String, dynamic> json) =>
 
 
 Result _$ResultFromJson(Map<String, dynamic> json) => Result(
-      id: json['id'] as int?,
-      posterPath: json['poster_path'] as String?,
+      key: json['key'] as String?,
     );
-
 

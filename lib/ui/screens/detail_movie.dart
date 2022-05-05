@@ -8,6 +8,7 @@ import 'package:my_movie_app/common/my_images.dart';
 import 'package:my_movie_app/ui/widgets/bottom_navigation_bar.dart';
 import 'package:my_movie_app/ui/widgets/panel_widget.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class DetailMovieScreen extends StatefulWidget {
   const DetailMovieScreen({Key? key}) : super(key: key);
@@ -81,15 +82,16 @@ class _DetailMovieScreenState extends State<DetailMovieScreen> {
                     "}",
                 height: (screenHeight ?? 0) * 0.6,
                 width: double.infinity,
-                fit: BoxFit.fill, 
+                fit: BoxFit.fill,
                 errorWidget: (context, url, error) => Container(
                   decoration: BoxDecoration(
                     image: DecorationImage(
                       image: const AssetImage(MyImages.imgNotFound),
                       fit: BoxFit.cover,
                       colorFilter: ColorFilter.mode(
-                        const Color(0x00121212).withOpacity(0.12),BlendMode.hardLight,
-                        ),
+                        const Color(0x00121212).withOpacity(0.12),
+                        BlendMode.hardLight,
+                      ),
                     ),
                   ),
                 ),
@@ -109,6 +111,27 @@ class _DetailMovieScreenState extends State<DetailMovieScreen> {
               ),
             ),
           ),
+           Positioned(
+            top: (screenHeight ?? 0) / 4,
+            left: (screenWidth ?? 0) / 2 - 40,
+            child: BlocBuilder<DetailMovieCubit,DetailMovieState>(
+              buildWhen: (prev, cur) => prev.loadStatus != cur.loadStatus,
+              builder: (context,state) => GestureDetector(
+                onTap:() async {
+                          final youtubeUrl =
+                              'https://www.youtube.com/embed/${state.video?.results?.first.key}';
+                          if (!await launchUrl(Uri.parse(youtubeUrl))) {
+                            throw "Could not launch $youtubeUrl";
+                          }
+                },
+                child: const Icon(
+                  Icons.play_circle_outline,
+                  color: Colors.yellow,
+                  size: 65,
+                ),
+              ),
+            ),
+          )
         ],
       );
 }

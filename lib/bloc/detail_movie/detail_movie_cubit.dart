@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_movie_app/models/load_status.dart';
 import 'package:my_movie_app/models/responsives/cast_list.dart';
 import 'package:my_movie_app/models/responsives/detail_movie.dart';
+import 'package:my_movie_app/models/responsives/video.dart';
 import 'package:my_movie_app/repository/movie_repository.dart';
 
 part 'detail_movie_state.dart';
@@ -18,8 +19,9 @@ class DetailMovieCubit extends Cubit<DetailMovieState> {
     try {
       final apiDetailMovie = await movieRepository.getDetailMovie(movieID);
       final apiCast = await movieRepository.getCast(movieID);
-      if ( apiDetailMovie != null || apiCast != null) {
-        emit(state.copyWith(detailMovie: apiDetailMovie,castList: apiCast,loadStatus: LoadStatus.SUCCESS));
+      final apiVideo = await movieRepository.getVideo(movieID);
+      if ( apiDetailMovie != null || apiCast != null || apiVideo != null) {
+        emit(state.copyWith(detailMovie: apiDetailMovie,castList: apiCast, video: apiVideo,loadStatus: LoadStatus.SUCCESS));
       } else {
         emit(state.copyWith(loadStatus: LoadStatus.FAILURE));
       }
