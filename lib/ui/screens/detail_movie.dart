@@ -57,8 +57,7 @@ class _DetailMovieScreenState extends State<DetailMovieScreen> {
           //   iconBackHeight = iconBackHeightCurrent - position * (panelHeightOpen - panelHeightClosed) / 2;
           // })
           {
-             _cubit.onPanelSlideCubit(position, iconBackHeight,iconBackHeightCurrent, panelHeightOpen, panelHeightClosed);
-            iconBackHeight = state.iconBackHeight ?? 0;
+             iconBackHeight =  _cubit.onPanelSlideCubit(position, iconBackHeight,iconBackHeightCurrent, panelHeightOpen, panelHeightClosed);
           }
             
         ),

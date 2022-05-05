@@ -36,10 +36,11 @@ class DetailMovieCubit extends Cubit<DetailMovieState> {
     }
   }
 
-  void onPanelSlideCubit(double position, double iconBackHeight ,double iconBackHeightCurrent,
+  double onPanelSlideCubit(double position, double iconBackHeight ,double iconBackHeightCurrent,
       double panelHeightOpen, double panelHeightClosed) {
         iconBackHeight = iconBackHeightCurrent - position * (panelHeightOpen - panelHeightClosed) / 2;
         emit(state.copyWith(iconBackHeight: iconBackHeight));
+        return iconBackHeight;
   }
 
 }
