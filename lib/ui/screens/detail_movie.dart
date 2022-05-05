@@ -52,10 +52,12 @@ class _DetailMovieScreenState extends State<DetailMovieScreen> {
         ),
         borderRadius: const BorderRadius.vertical(top: Radius.circular(50.0)),
         onPanelSlide: (position) => setState(() {
-          final panelMaxScrollExtent = panelHeightOpen - panelHeightClosed;
-          iconBackHeight =
-              iconBackHeightClosed - position * panelMaxScrollExtent / 2;
-        }),
+            
+          });
+            //  _cubit.onPanelSlideCubit(position, iconBackHeight,iconBackHeightCurrent, panelHeightOpen, panelHeightClosed);
+            // iconBackHeight = state.iconBackHeight ?? 0;
+            
+        ),
       ),
       bottomNavigationBar: const MyBottomNaviGationBar(),
     );
