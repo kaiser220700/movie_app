@@ -114,25 +114,28 @@ class _HomeSreenState extends State<HomeScreen> {
                           autoplayDisableOnInteraction: false,
                           onIndexChanged: (index) => _currentIndex = index,
                           onTap: (index) {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) {
-                                  return BlocProvider<DetailMovieCubit>(
-                                    create: (context) {
-                                      final repository = RepositoryProvider.of<
-                                          MovieRepository>(context);
-                                      return DetailMovieCubit(
-                                          repository,
-                                          state.popularMovie?.results?[index].id
-                                                  .toString() ??
-                                              "");
-                                    },
-                                    child: const DetailMovieScreen(),
-                                  );
-                                },
-                              ),
-                            );
+                            if (_currentIndex == index) {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) {
+                                    return BlocProvider<DetailMovieCubit>(
+                                      create: (context) {
+                                        final repository = RepositoryProvider
+                                            .of<MovieRepository>(context);
+                                        return DetailMovieCubit(
+                                            repository,
+                                            state.popularMovie?.results?[index]
+                                                    .id
+                                                    .toString() ??
+                                                "");
+                                      },
+                                      child: const DetailMovieScreen(),
+                                    );
+                                  },
+                                ),
+                              );
+                            }
                           },
                           viewportFraction: 0.7,
                           scale: 0.75,
@@ -145,8 +148,11 @@ class _HomeSreenState extends State<HomeScreen> {
                           itemCount: state.popularMovie?.results?.length ?? 0,
                           itemBuilder: (BuildContext context, int index) {
                             return GestureDetector(
-                              onDoubleTap: () =>
-                                  _autoPlay = _cubit.onAutoPlay(_autoPlay),
+                              onDoubleTap: () {
+                                if (_currentIndex == index) {
+                                  _autoPlay = _cubit.onAutoPlay(_autoPlay);
+                                }
+                              },
                               child: Stack(
                                 children: [
                                   ClipRRect(
@@ -282,26 +288,28 @@ class _HomeSreenState extends State<HomeScreen> {
                         autoplayDisableOnInteraction: false,
                         onIndexChanged: (index) => _currentIndex = index,
                         onTap: (index) {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) {
-                                return BlocProvider<DetailMovieCubit>(
-                                  create: (context) {
-                                    final repository =
-                                        RepositoryProvider.of<MovieRepository>(
-                                            context);
-                                    return DetailMovieCubit(
-                                        repository,
-                                        state.upcomingMovie?.results?[index].id
-                                                .toString() ??
-                                            "");
-                                  },
-                                  child: const DetailMovieScreen(),
-                                );
-                              },
-                            ),
-                          );
+                          if (_currentIndex == index) {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) {
+                                  return BlocProvider<DetailMovieCubit>(
+                                    create: (context) {
+                                      final repository = RepositoryProvider.of<
+                                          MovieRepository>(context);
+                                      return DetailMovieCubit(
+                                          repository,
+                                          state.upcomingMovie?.results?[index]
+                                                  .id
+                                                  .toString() ??
+                                              "");
+                                    },
+                                    child: const DetailMovieScreen(),
+                                  );
+                                },
+                              ),
+                            );
+                          }
                         },
                         viewportFraction: 0.4,
                         scale: 0.5,
@@ -314,8 +322,11 @@ class _HomeSreenState extends State<HomeScreen> {
                         itemCount: state.upcomingMovie?.results?.length ?? 0,
                         itemBuilder: (BuildContext context, int index) {
                           return GestureDetector(
-                            onDoubleTap: () =>
-                                _autoPlay = _cubit.onAutoPlay(_autoPlay),
+                            onDoubleTap: () {
+                              if (_currentIndex == index) {
+                                _autoPlay = _cubit.onAutoPlay(_autoPlay);
+                              }
+                            },
                             child: Container(
                               margin: const EdgeInsets.only(bottom: 40),
                               child: ClipRRect(
