@@ -23,7 +23,7 @@ class HomeScreen extends StatefulWidget {
 class _HomeSreenState extends State<HomeScreen> {
   late final MovieCubit _cubit;
   double? screenWidth, screenHeight;
-  int? _currentIndex;
+  int _currentIndex = 0;
   bool _autoPlay = false;
   @override
   void initState() {

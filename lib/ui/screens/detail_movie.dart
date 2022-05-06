@@ -70,7 +70,7 @@ class _DetailMovieScreenState extends State<DetailMovieScreen> {
                 progressIndicatorBuilder: (context, url, progress) {
                   return const Padding(
                     padding: EdgeInsets.only(
-                        left: 100, right: 100, top: 150, bottom: 150),
+                        left: 155, right: 155, top: 200, bottom: 200),
                     child: CircularProgressIndicator(
                       strokeWidth: 2,
                       valueColor: AlwaysStoppedAnimation<Color>(Colors.black),
