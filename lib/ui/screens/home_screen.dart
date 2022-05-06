@@ -10,7 +10,7 @@ import 'package:my_movie_app/common/my_images.dart';
 import 'package:my_movie_app/common/my_style.dart';
 import 'package:my_movie_app/models/servide.dart';
 import 'package:my_movie_app/repository/movie_repository.dart';
-import 'package:my_movie_app/ui/screens/detail_movie.dart';
+import 'package:my_movie_app/ui/screens/detail_movie_screen.dart';
 import 'package:my_movie_app/ui/widgets/bottom_navigation_bar.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -114,7 +114,7 @@ class _HomeSreenState extends State<HomeScreen> {
                           autoplayDisableOnInteraction: false,
                           onIndexChanged: (index) => _currentIndex = index,
                           onTap: (index) {
-                            if (_currentIndex == index) {
+                            if (index == _currentIndex) {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
@@ -149,7 +149,7 @@ class _HomeSreenState extends State<HomeScreen> {
                           itemBuilder: (BuildContext context, int index) {
                             return GestureDetector(
                               onDoubleTap: () {
-                                if (_currentIndex == index) {
+                                if (index == _currentIndex) {
                                   _autoPlay = _cubit.onAutoPlay(_autoPlay);
                                 }
                               },
@@ -190,7 +190,7 @@ class _HomeSreenState extends State<HomeScreen> {
                                           ),
                                         ),
                                       ),
-                                      color: _currentIndex == index
+                                      color: index == _currentIndex
                                           ? const Color(0x00121212)
                                               .withOpacity(0.05)
                                           : const Color.fromARGB(
@@ -288,7 +288,7 @@ class _HomeSreenState extends State<HomeScreen> {
                         autoplayDisableOnInteraction: false,
                         onIndexChanged: (index) => _currentIndex = index,
                         onTap: (index) {
-                          if (_currentIndex == index) {
+                          if (index == _currentIndex) {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
@@ -323,7 +323,7 @@ class _HomeSreenState extends State<HomeScreen> {
                         itemBuilder: (BuildContext context, int index) {
                           return GestureDetector(
                             onDoubleTap: () {
-                              if (_currentIndex == index) {
+                              if (index == _currentIndex) {
                                 _autoPlay = _cubit.onAutoPlay(_autoPlay);
                               }
                             },
@@ -363,7 +363,7 @@ class _HomeSreenState extends State<HomeScreen> {
                                       ),
                                     ),
                                   ),
-                                  color: _currentIndex == index
+                                  color: index == _currentIndex
                                       ? const Color(0x00121212)
                                           .withOpacity(0.05)
                                       : const Color.fromARGB(255, 100, 171, 219)

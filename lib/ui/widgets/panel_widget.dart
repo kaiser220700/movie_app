@@ -200,6 +200,7 @@ class PanelWidget extends StatelessWidget {
                                 state.castList?.cast?[index].name
                                         ?.toUpperCase() ??
                                     "",
+                                    maxLines: 1,
                                 style: TextStyle(
                                     fontSize: 10, color: Colors.grey[500]),
                               ),
