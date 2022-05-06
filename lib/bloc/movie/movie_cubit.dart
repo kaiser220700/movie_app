@@ -28,4 +28,10 @@ class MovieCubit extends Cubit<MovieState> {
       emit(state.copyWith(loadStatus: LoadStatus.FAILURE));
     }
   }
+
+  bool onAutoPlay(bool autoPlay) {
+    autoPlay = !autoPlay;
+    emit(state.copyWith(autoPlay: autoPlay));
+    return autoPlay;
+  }
 }

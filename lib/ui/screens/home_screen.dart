@@ -24,7 +24,7 @@ class _HomeSreenState extends State<HomeScreen> {
   late final MovieCubit _cubit;
   double? screenWidth, screenHeight;
   int? _currentIndex;
-
+  bool _autoPlay = false;
   @override
   void initState() {
     _cubit = BlocProvider.of<MovieCubit>(context);
@@ -100,15 +100,20 @@ class _HomeSreenState extends State<HomeScreen> {
               SizedBox(height: (screenHeight ?? 0) * (20 / 926)),
               BlocBuilder<MovieCubit, MovieState>(
                   bloc: _cubit,
-                  buildWhen: (prev, cur) => prev.loadStatus != cur.loadStatus,
+                  buildWhen: (prev, cur) =>
+                      prev.loadStatus != cur.loadStatus ||
+                      prev.autoPlay != cur.autoPlay,
                   builder: (context, state) {
                     return Center(
                       child: SizedBox(
                         height: (screenHeight ?? 0) * (141 / 926) + 40,
                         width: double.infinity,
                         child: Swiper(
+                          autoplay: _autoPlay,
+                          autoplayDelay: 1500,
+                          autoplayDisableOnInteraction: false,
                           onIndexChanged: (index) => _currentIndex = index,
-                                  onTap: (index) {
+                          onTap: (index) {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
@@ -139,92 +144,99 @@ class _HomeSreenState extends State<HomeScreen> {
                           ),
                           itemCount: state.popularMovie?.results?.length ?? 0,
                           itemBuilder: (BuildContext context, int index) {
-                            return Stack(
-                              children: [
-                                ClipRRect(
-                                  borderRadius: const BorderRadius.all(
-                                    Radius.circular(30),
-                                  ),
-                                  child: CachedNetworkImage(
-                                    progressIndicatorBuilder:
-                                        (context, url, progress) {
-                                      return const Padding(
-                                        padding: EdgeInsets.only(
-                                            left: 100,
-                                            right: 100,
-                                            top: 20,
-                                            bottom: 20),
-                                        child: CircularProgressIndicator(
-                                          strokeWidth: 2,
-                                          valueColor:
-                                              AlwaysStoppedAnimation<Color>(
-                                                  Colors.black),
-                                        ),
-                                      );
-                                    },
-                                    imageUrl:
-                                        "https://image.tmdb.org/t/p/original/${state.popularMovie?.results?[index].backdropPath ?? ""}",
-                                    height: (screenHeight ?? 0) * (141 / 926),
-                                    width: (screenWidth ?? 0) * (328 / 428),
-                                    fit: BoxFit.cover,
-                                    errorWidget: (context, url, error) =>
-                                        Container(
-                                      decoration: const BoxDecoration(
-                                        image: DecorationImage(
-                                          image:
-                                              AssetImage(MyImages.imgNotFound),
+                            return GestureDetector(
+                              onDoubleTap: () =>
+                                  _autoPlay = _cubit.onAutoPlay(_autoPlay),
+                              child: Stack(
+                                children: [
+                                  ClipRRect(
+                                    borderRadius: const BorderRadius.all(
+                                      Radius.circular(30),
+                                    ),
+                                    child: CachedNetworkImage(
+                                      progressIndicatorBuilder:
+                                          (context, url, progress) {
+                                        return const Padding(
+                                          padding: EdgeInsets.only(
+                                              left: 100,
+                                              right: 100,
+                                              top: 20,
+                                              bottom: 20),
+                                          child: CircularProgressIndicator(
+                                            strokeWidth: 2,
+                                            valueColor:
+                                                AlwaysStoppedAnimation<Color>(
+                                                    Colors.black),
+                                          ),
+                                        );
+                                      },
+                                      imageUrl:
+                                          "https://image.tmdb.org/t/p/original/${state.popularMovie?.results?[index].backdropPath ?? ""}",
+                                      height: (screenHeight ?? 0) * (141 / 926),
+                                      width: (screenWidth ?? 0) * (328 / 428),
+                                      fit: BoxFit.cover,
+                                      errorWidget: (context, url, error) =>
+                                          Container(
+                                        decoration: const BoxDecoration(
+                                          image: DecorationImage(
+                                            image: AssetImage(
+                                                MyImages.imgNotFound),
+                                          ),
                                         ),
                                       ),
-                                    ),
-                                    color: _currentIndex == index
-                                        ? const Color(0x00121212)
-                                            .withOpacity(0.05)
-                                        : const Color.fromARGB(255, 100, 171, 219)
-                                            .withOpacity(0.6),
-                                    colorBlendMode: BlendMode.hardLight,
-                                  ),
-                                ),
-                                Positioned(
-                                  top: 87,
-                                  left: 30,
-                                  child: SizedBox(
-                                    width: (screenWidth ?? 0) * (328 / 428) / 2,
-                                    child: Text(
-                                      "${state.popularMovie?.results?[index].title}",
-                                      style: MyStyles.tsTitle,
-                                      overflow: TextOverflow.ellipsis,
+                                      color: _currentIndex == index
+                                          ? const Color(0x00121212)
+                                              .withOpacity(0.05)
+                                          : const Color.fromARGB(
+                                                  255, 100, 171, 219)
+                                              .withOpacity(0.6),
+                                      colorBlendMode: BlendMode.hardLight,
                                     ),
                                   ),
-                                ),
-                                Positioned(
-                                  top: 87,
-                                  left: 200,
-                                  child: Container(
-                                    height: 20,
-                                    width: (screenWidth ?? 0) * (328 / 428) / 5,
-                                    decoration: BoxDecoration(
-                                        color: MyColors.colorIMDBCard,
-                                        borderRadius:
-                                            BorderRadius.circular(15.0)),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Image.asset(MyImages.imgIMDB,
-                                            height: 7.0),
-                                        const SizedBox(width: 10),
-                                        Text(
-                                          "${state.popularMovie?.results?[index].voteAverage}",
-                                          style: const TextStyle(
-                                              fontSize: 9.5,
-                                              fontWeight: FontWeight.w700),
-                                          overflow: TextOverflow.ellipsis,
-                                        ),
-                                      ],
+                                  Positioned(
+                                    top: 87,
+                                    left: 30,
+                                    child: SizedBox(
+                                      width:
+                                          (screenWidth ?? 0) * (328 / 428) / 2,
+                                      child: Text(
+                                        "${state.popularMovie?.results?[index].title}",
+                                        style: MyStyles.tsTitle,
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
                                     ),
                                   ),
-                                ),
-                              ],
+                                  Positioned(
+                                    top: 87,
+                                    left: 200,
+                                    child: Container(
+                                      height: 20,
+                                      width:
+                                          (screenWidth ?? 0) * (328 / 428) / 5,
+                                      decoration: BoxDecoration(
+                                          color: MyColors.colorIMDBCard,
+                                          borderRadius:
+                                              BorderRadius.circular(15.0)),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Image.asset(MyImages.imgIMDB,
+                                              height: 7.0),
+                                          const SizedBox(width: 10),
+                                          Text(
+                                            "${state.popularMovie?.results?[index].voteAverage}",
+                                            style: const TextStyle(
+                                                fontSize: 9.5,
+                                                fontWeight: FontWeight.w700),
+                                            overflow: TextOverflow.ellipsis,
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
                             );
                           },
                         ),
@@ -257,12 +269,17 @@ class _HomeSreenState extends State<HomeScreen> {
               SizedBox(height: (screenHeight ?? 0) * (20 / 926)),
               BlocBuilder<MovieCubit, MovieState>(
                   bloc: _cubit,
-                  buildWhen: (prev, cur) => prev.loadStatus != cur.loadStatus,
+                  buildWhen: (prev, cur) =>
+                      prev.loadStatus != cur.loadStatus ||
+                      prev.autoPlay != cur.autoPlay,
                   builder: (context, state) {
                     return SizedBox(
                       height: (screenHeight ?? 0) * (265 / 926),
                       width: double.infinity,
                       child: Swiper(
+                        autoplay: _autoPlay,
+                        autoplayDelay: 1500,
+                        autoplayDisableOnInteraction: false,
                         onIndexChanged: (index) => _currentIndex = index,
                         onTap: (index) {
                           Navigator.push(
@@ -296,45 +313,52 @@ class _HomeSreenState extends State<HomeScreen> {
                         ),
                         itemCount: state.upcomingMovie?.results?.length ?? 0,
                         itemBuilder: (BuildContext context, int index) {
-                          return Container(
-                            margin: const EdgeInsets.only(bottom: 40),
-                            child: ClipRRect(
-                              borderRadius: const BorderRadius.all(
-                                Radius.circular(30),
-                              ),
-                              child: CachedNetworkImage(
-                                progressIndicatorBuilder:
-                                    (context, url, progress) {
-                                  return const Padding(
-                                    padding: EdgeInsets.only(
-                                        left: 100,
-                                        right: 100,
-                                        top: 20,
-                                        bottom: 20),
-                                    child: CircularProgressIndicator(
-                                      strokeWidth: 2,
-                                      valueColor: AlwaysStoppedAnimation<Color>(
-                                          Colors.black),
-                                    ),
-                                  );
-                                },
-                                imageUrl:
-                                    "https://image.tmdb.org/t/p/original/${state.upcomingMovie?.results?[index].posterPath ?? ""}",
-                                height: (screenHeight ?? 0) * (200 / 926),
-                                width: (screenWidth ?? 0) * (170 / 428),
-                                fit: BoxFit.cover,
-                                errorWidget: (context, url, error) => Container(
-                                  decoration: const BoxDecoration(
-                                    image: DecorationImage(
-                                      image: AssetImage(MyImages.imgNotFound),
+                          return GestureDetector(
+                            onDoubleTap: () =>
+                                _autoPlay = _cubit.onAutoPlay(_autoPlay),
+                            child: Container(
+                              margin: const EdgeInsets.only(bottom: 40),
+                              child: ClipRRect(
+                                borderRadius: const BorderRadius.all(
+                                  Radius.circular(30),
+                                ),
+                                child: CachedNetworkImage(
+                                  progressIndicatorBuilder:
+                                      (context, url, progress) {
+                                    return const Padding(
+                                      padding: EdgeInsets.only(
+                                          left: 100,
+                                          right: 100,
+                                          top: 20,
+                                          bottom: 20),
+                                      child: CircularProgressIndicator(
+                                        strokeWidth: 2,
+                                        valueColor:
+                                            AlwaysStoppedAnimation<Color>(
+                                                Colors.black),
+                                      ),
+                                    );
+                                  },
+                                  imageUrl:
+                                      "https://image.tmdb.org/t/p/original/${state.upcomingMovie?.results?[index].posterPath ?? ""}",
+                                  height: (screenHeight ?? 0) * (200 / 926),
+                                  width: (screenWidth ?? 0) * (170 / 428),
+                                  fit: BoxFit.cover,
+                                  errorWidget: (context, url, error) =>
+                                      Container(
+                                    decoration: const BoxDecoration(
+                                      image: DecorationImage(
+                                        image: AssetImage(MyImages.imgNotFound),
+                                      ),
                                     ),
                                   ),
+                                  color: _currentIndex == index
+                                      ? const Color(0x00121212)
+                                          .withOpacity(0.05)
+                                      : const Color.fromARGB(255, 100, 171, 219)
+                                          .withOpacity(0.6),
+                                  colorBlendMode: BlendMode.hardLight,
                                 ),
-                                color: _currentIndex == index
-                                    ? const Color(0x00121212).withOpacity(0.05)
-                                    : const Color.fromARGB(255, 100, 171, 219)
-                                        .withOpacity(0.6),
-                                colorBlendMode: BlendMode.hardLight,
                               ),
                             ),
                           );

@@ -53,12 +53,7 @@ class _DetailMovieScreenState extends State<DetailMovieScreen> {
             panelController: panelController,
           ),
           borderRadius: const BorderRadius.vertical(top: Radius.circular(50.0)),
-          onPanelSlide: (position) //=> setState(() {
-          //   iconBackHeight = iconBackHeightCurrent - position * (panelHeightOpen - panelHeightClosed) / 2;
-          // })
-          {
-             iconBackHeight =  _cubit.onPanelSlideCubit(position, iconBackHeight,iconBackHeightCurrent, panelHeightOpen, panelHeightClosed);
-          }
+          onPanelSlide: (position) => iconBackHeight =  _cubit.onPanelSlideCubit(position, iconBackHeight,iconBackHeightCurrent, panelHeightOpen, panelHeightClosed),
             
         ),
       ),
