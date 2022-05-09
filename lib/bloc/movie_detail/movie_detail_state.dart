@@ -1,7 +1,7 @@
-part of 'detail_movie_cubit.dart';
+part of 'movie_detail_cubit.dart';
 
 // ignore: must_be_immutable
-class DetailMovieState extends Equatable {
+class MovieDetailState extends Equatable {
   LoadStatus? loadStatus;
   DetailMovie? detailMovie;
   CastList? castList;
@@ -9,7 +9,7 @@ class DetailMovieState extends Equatable {
 
   double? iconBackHeight;
 
-  DetailMovieState({
+  MovieDetailState({
     this.loadStatus,
     this.detailMovie,
     this.castList,
@@ -17,14 +17,14 @@ class DetailMovieState extends Equatable {
     this.iconBackHeight,
   });
 
-  DetailMovieState copyWith({
+  MovieDetailState copyWith({
     LoadStatus? loadStatus,
     DetailMovie? detailMovie,
     CastList? castList,
     Video? video,
     double? iconBackHeight,
   }) {
-    return DetailMovieState(
+    return MovieDetailState(
       loadStatus: loadStatus ?? this.loadStatus,
       detailMovie: detailMovie ?? this.detailMovie,
       castList: castList ?? this.castList,

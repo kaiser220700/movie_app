@@ -22,4 +22,3 @@ Genres _$GenresFromJson(Map<String, dynamic> json) => Genres(
       name: json['name'] as String?,
     );
 
-

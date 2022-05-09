@@ -13,6 +13,7 @@ PopularMovie _$PopularMovieFromJson(Map<String, dynamic> json) => PopularMovie(
     );
 
 
+
 Result _$ResultFromJson(Map<String, dynamic> json) => Result(
       backdropPath: json['backdrop_path'] as String?,
       id: json['id'] as int?,

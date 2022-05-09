@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:my_movie_app/bloc/movie/movie_cubit.dart';
+import 'package:my_movie_app/bloc/home/home_cubit.dart';
 import 'package:my_movie_app/networks/api_client.dart';
 import 'package:my_movie_app/networks/api_util.dart';
 import 'package:my_movie_app/repository/movie_repository.dart';
@@ -18,9 +18,9 @@ void main() {
       ],
       child: MultiBlocProvider(
         providers: [
-          BlocProvider<MovieCubit>(create: (context) {
+          BlocProvider<HomeCubit>(create: (context) {
             final repository = RepositoryProvider.of<MovieRepository>(context);
-            return MovieCubit(repository);
+            return HomeCubit(repository);
           }),
         ],
         child: const MaterialApp(

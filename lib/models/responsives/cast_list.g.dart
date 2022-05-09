@@ -20,4 +20,3 @@ Cast _$CastFromJson(Map<String, dynamic> json) => Cast(
       character: json['character'] as String?,
     );
 
-

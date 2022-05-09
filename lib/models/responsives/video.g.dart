@@ -13,8 +13,8 @@ Video _$VideoFromJson(Map<String, dynamic> json) => Video(
     );
 
 
-
 Result _$ResultFromJson(Map<String, dynamic> json) => Result(
       key: json['key'] as String?,
     );
+
 

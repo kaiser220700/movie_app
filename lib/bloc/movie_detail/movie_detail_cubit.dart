@@ -6,13 +6,13 @@ import 'package:my_movie_app/models/responsives/detail_movie.dart';
 import 'package:my_movie_app/models/responsives/video.dart';
 import 'package:my_movie_app/repository/movie_repository.dart';
 
-part 'detail_movie_state.dart';
+part 'movie_detail_state.dart';
 
-class DetailMovieCubit extends Cubit<DetailMovieState> {
+class MovieDetailCubit extends Cubit<MovieDetailState> {
   MovieRepository movieRepository;
   String movieID;
-  DetailMovieCubit(this.movieRepository, this.movieID)
-      : super(DetailMovieState());
+  MovieDetailCubit(this.movieRepository, this.movieID)
+      : super(MovieDetailState());
 
   void init() async {
     emit(state.copyWith(loadStatus: LoadStatus.LOADING));

@@ -1,7 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:my_movie_app/bloc/detail_movie/detail_movie_cubit.dart';
+import 'package:my_movie_app/bloc/movie_detail/movie_detail_cubit.dart';
 import 'package:my_movie_app/common/my_color.dart';
 import 'package:my_movie_app/common/my_icons.dart';
 import 'package:my_movie_app/common/my_images.dart';
@@ -37,7 +37,7 @@ class PanelWidget extends StatelessWidget {
           const SizedBox(height: 18.0),
           _buildDragHandle(),
           SizedBox(height: size.height * (20 / 926)),
-          BlocBuilder<DetailMovieCubit, DetailMovieState>(
+          BlocBuilder<MovieDetailCubit, MovieDetailState>(
             buildWhen: (prev, curr) => prev.loadStatus != curr.loadStatus,
             builder: (context, state) {
               return Column(
@@ -68,7 +68,7 @@ class PanelWidget extends StatelessWidget {
                         child: Text(state.detailMovie?.genres?.last.name ?? "",
                             style: MyStyles.tsTextButton),
                       ),
-                      SizedBox(width: size.width * (10 / 428)),
+                      SizedBox(width: size.width * (15 / 428)),
                       //age condition
                       state.detailMovie?.adult ?? false
                           ? Container(
@@ -129,7 +129,7 @@ class PanelWidget extends StatelessWidget {
                     collapseOnTextTap: true,
                     maxLines: 2,
                   ),
-                  SizedBox(height: size.height * (10 / 926)),
+                  SizedBox(height: size.height * (20 / 926)),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: const [
@@ -140,7 +140,7 @@ class PanelWidget extends StatelessWidget {
                       )
                     ],
                   ),
-                  SizedBox(height: size.height * (3 / 926)),
+                  SizedBox(height: size.height * (15 / 926)),
                   SizedBox(
                     height: 200,
                     child: ListView.separated(
@@ -194,23 +194,29 @@ class PanelWidget extends StatelessWidget {
                                 ),
                               ),
                             ),
-                            SizedBox(height: size.height * (3 / 926)),
-                            Center(
+                            SizedBox(height: size.height * (6 / 926)),
+                            Container(
+                              width: 110,
+                              padding: const EdgeInsets.only(left: 30),
                               child: Text(
                                 state.castList?.cast?[index].name
                                         ?.toUpperCase() ??
                                     "",
                                     maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
                                 style: TextStyle(
                                     fontSize: 10, color: Colors.grey[500]),
                               ),
                             ),
-                            SizedBox(height: size.height * (3 / 926)),
-                            Center(
+                            SizedBox(height: size.height * (6/ 926)),
+                            Container(
+                              width: 110,
+                              padding: const EdgeInsets.only(left: 30),
                               child: Text(
                                 state.castList?.cast?[index].character
                                         ?.toUpperCase() ??
                                     "",
+                                    overflow: TextOverflow.ellipsis,
                                 style: TextStyle(
                                     fontSize: 10, color: Colors.grey[500]),
                               ),
