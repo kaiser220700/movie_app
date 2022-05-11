@@ -5,7 +5,8 @@ import 'package:my_movie_app/bloc/home/home_cubit.dart';
 import 'package:my_movie_app/networks/api_client.dart';
 import 'package:my_movie_app/networks/api_util.dart';
 import 'package:my_movie_app/repository/movie_repository.dart';
-import 'package:my_movie_app/ui/screens/home_screen.dart';
+import 'package:my_movie_app/ui/screens/root_app/root_app_cubit.dart';
+import 'package:my_movie_app/ui/screens/root_app/root_app_view.dart';
 
 void main() {
   late final ApiClient _apiClient;
@@ -18,14 +19,20 @@ void main() {
       ],
       child: MultiBlocProvider(
         providers: [
-          BlocProvider<HomeCubit>(create: (context) {
-            final repository = RepositoryProvider.of<MovieRepository>(context);
-            return HomeCubit(repository);
-          }),
+          BlocProvider<HomeCubit>(
+            create: (context) {
+              final repository =
+                  RepositoryProvider.of<MovieRepository>(context);
+              return HomeCubit(repository);
+            },
+          ),
+          BlocProvider<RootAppCubit>(
+            create: (context) => RootAppCubit(),
+          ),
         ],
         child: const MaterialApp(
           debugShowCheckedModeBanner: false,
-          home: HomeScreen(),
+          home: RootApp(),
         ),
       )));
 

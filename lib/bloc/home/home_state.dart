@@ -5,14 +5,12 @@ class HomeState extends Equatable {
   LoadStatus? loadStatus;
   PopularMovie? popularMovie;
   UpcomingMovie? upcomingMovie;
-  bool? autoPlay;
-  int? currentIndex;
+  bool autoPlay;
   HomeState({
     this.loadStatus,
     this.popularMovie,
     this.upcomingMovie,
-    this.autoPlay,
-    this.currentIndex,
+    this.autoPlay = false,
   });
 
   HomeState copyWith({
@@ -21,17 +19,17 @@ class HomeState extends Equatable {
     UpcomingMovie? upcomingMovie,
     bool? autoPlay,
     int? currentIndex,
+    
   }) {
     return HomeState(
       loadStatus: loadStatus ?? this.loadStatus,
       popularMovie: popularMovie ?? this.popularMovie,
       upcomingMovie: upcomingMovie ?? this.upcomingMovie,
       autoPlay: autoPlay ?? this.autoPlay,
-      currentIndex: currentIndex ?? this.currentIndex
     );
   }
 
   @override
   List<Object?> get props =>
-      [loadStatus, popularMovie, upcomingMovie, autoPlay, currentIndex];
+      [loadStatus, popularMovie, upcomingMovie, autoPlay];
 }

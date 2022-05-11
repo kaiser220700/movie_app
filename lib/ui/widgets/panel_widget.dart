@@ -44,6 +44,8 @@ class PanelWidget extends StatelessWidget {
                 children: [
                   Text(
                     state.detailMovie?.title ?? "",
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
                     style: TextStyle(
                         fontSize: size.height * (45 / 926),
                         color: Colors.white,
@@ -197,7 +199,7 @@ class PanelWidget extends StatelessWidget {
                             SizedBox(height: size.height * (6 / 926)),
                             Container(
                               width: 110,
-                              padding: const EdgeInsets.only(left: 30),
+                              padding: const EdgeInsets.only(left: 25),
                               child: Text(
                                 state.castList?.cast?[index].name
                                         ?.toUpperCase() ??
@@ -211,7 +213,7 @@ class PanelWidget extends StatelessWidget {
                             SizedBox(height: size.height * (6/ 926)),
                             Container(
                               width: 110,
-                              padding: const EdgeInsets.only(left: 30),
+                              padding: const EdgeInsets.only(left: 25),
                               child: Text(
                                 state.castList?.cast?[index].character
                                         ?.toUpperCase() ??

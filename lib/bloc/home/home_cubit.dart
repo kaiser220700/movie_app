@@ -34,14 +34,8 @@ class HomeCubit extends Cubit<HomeState> {
     }
   }
 
-  bool onAutoPlay(bool autoPlay) {
+  void onAutoPlay(bool autoPlay) {
     autoPlay = !autoPlay;
     emit(state.copyWith(autoPlay: autoPlay));
-    return autoPlay;
-  }
-
-  int onIndexTap (int index) {
-    emit(state.copyWith(currentIndex: index));
-    return index;
   }
 }

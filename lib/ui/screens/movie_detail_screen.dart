@@ -18,10 +18,10 @@ class DetailMovieScreen extends StatefulWidget {
 
 class _DetailMovieScreenState extends State<DetailMovieScreen> {
   late final MovieDetailCubit _cubit;
-  double? screenWidth, screenHeight;
+  double? _screenWidth, _screenHeight;
   final panelController = PanelController();
-  static const double iconBackHeightCurrent = 768;
-  double iconBackHeight = iconBackHeightCurrent;
+  double? _iconBackHeightCurrent;
+  double? _iconBackHeight;
 
   @override
   void initState() {
@@ -33,12 +33,17 @@ class _DetailMovieScreenState extends State<DetailMovieScreen> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    screenHeight = size.height;
-    screenWidth = size.width;
-    final panelHeightOpen = (screenHeight ?? 0) * 0.8;
-    final panelHeightClosed = (screenHeight ?? 0) * 0.45;
+    _screenHeight = size.height;
+    _screenWidth = size.width;
+    _iconBackHeightCurrent = (_screenHeight ?? 0) * 0.92;
+    final panelHeightOpen = (_screenHeight ?? 0) * 0.8;
+    final panelHeightClosed = (_screenHeight ?? 0) * 0.45;
     return Scaffold(
-      body: BlocBuilder<MovieDetailCubit, MovieDetailState>(
+      body: BlocConsumer<MovieDetailCubit, MovieDetailState>(
+        listenWhen: (prev, cur) => prev.iconBackHeight != cur.iconBackHeight,
+        listener: (context, state) {
+          _iconBackHeight = state.iconBackHeight;
+        },
         buildWhen: (prev, cur) => prev.iconBackHeight != cur.iconBackHeight,
         builder: (context, state) => SlidingUpPanel(
           controller: panelController,
@@ -52,12 +57,8 @@ class _DetailMovieScreenState extends State<DetailMovieScreen> {
             panelController: panelController,
           ),
           borderRadius: const BorderRadius.vertical(top: Radius.circular(50.0)),
-          onPanelSlide: (position) => iconBackHeight = _cubit.onPanelSlideCubit(
-              position,
-              iconBackHeight,
-              iconBackHeightCurrent,
-              panelHeightOpen,
-              panelHeightClosed),
+          onPanelSlide: (position) => _cubit.onPositionIcon(position,
+              _iconBackHeightCurrent ?? 0, panelHeightOpen, panelHeightClosed),
         ),
       ),
       bottomNavigationBar: _buildBottomNavigationBar(),
@@ -71,10 +72,10 @@ class _DetailMovieScreenState extends State<DetailMovieScreen> {
             builder: (context, state) {
               return CachedNetworkImage(
                 progressIndicatorBuilder: (context, url, progress) {
-                  return const Padding(
+                  return Padding(
                     padding: EdgeInsets.only(
-                        left: 155, right: 155, top: 175, bottom: 175),
-                    child: CircularProgressIndicator(
+                        left: (_screenWidth ?? 0) * 0.4, right: (_screenWidth ?? 0) * 0.4, top: (_screenHeight ?? 0) * 0.21, bottom: (_screenHeight ?? 0) * 0.21),
+                    child: const CircularProgressIndicator(
                       strokeWidth: 2,
                       valueColor: AlwaysStoppedAnimation<Color>(Colors.black),
                     ),
@@ -82,7 +83,7 @@ class _DetailMovieScreenState extends State<DetailMovieScreen> {
                 },
                 imageUrl:
                     "https://image.tmdb.org/t/p/original/${state.detailMovie?.backdropPath}",
-                height: (screenHeight ?? 0) * 0.53,
+                height: (_screenHeight ?? 0) * 0.53,
                 width: double.infinity,
                 fit: BoxFit.fill,
                 errorWidget: (context, url, error) => Container(
@@ -103,8 +104,8 @@ class _DetailMovieScreenState extends State<DetailMovieScreen> {
             },
           ),
           Positioned(
-            left: 60,
-            bottom: iconBackHeight,
+            left: (_screenWidth ?? 0) * 0.13,
+            bottom: _iconBackHeight ?? _iconBackHeightCurrent,
             child: GestureDetector(
               onTap: () => {Navigator.pop(context)},
               child: const Icon(
@@ -114,8 +115,8 @@ class _DetailMovieScreenState extends State<DetailMovieScreen> {
             ),
           ),
           Positioned(
-            top: (screenHeight ?? 0) / 4,
-            left: (screenWidth ?? 0) / 2 - 40,
+            top: (_screenHeight ?? 0) / 4 - 40,
+            left: (_screenWidth ?? 0) / 2 - 40,
             child: BlocBuilder<MovieDetailCubit, MovieDetailState>(
               buildWhen: (prev, cur) => prev.loadStatus != cur.loadStatus,
               builder: (context, state) => GestureDetector(
